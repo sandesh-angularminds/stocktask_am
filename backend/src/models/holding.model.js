@@ -30,19 +30,19 @@ module.exports = (sequelize, DataTypes) => {
         // Virtual fields for derived values
         paranoid: true,
         timestamps: true,
-        virtuals: {
-          totalValue: {
-            get() {
-              return this.quantity * this.currentPrice; // Derived value: Quantity * Current Price
-            },
-          },
-          pnl: {
-            get() {
-              // Derived value: (Current Price - Average Buy Price) * Quantity
-              return (this.currentPrice - this.averageBuyPrice) * this.quantity;
-            },
-          },
-        },
+      //   virtuals: {
+      //     totalValue: {
+      //       get() {
+      //         return this.quantity * this.currentPrice; // Derived value: Quantity * Current Price
+      //       },
+      //     },
+      //     pnl: {
+      //       get() {
+      //         // Derived value: (Current Price - Average Buy Price) * Quantity
+      //         return (this.currentPrice - this.averageBuyPrice) * this.quantity;
+      //       },
+      //     },
+      //   },
       }
     );
   
