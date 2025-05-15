@@ -90,7 +90,7 @@ export const Holdings = () => {
                     variant={"destructive"}
                     onClick={() => deleteHolding(data.id)}
                   >
-                    Delete
+                    Sell
                   </Button>
                 </TableCell>
               </TableRow>

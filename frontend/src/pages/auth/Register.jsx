@@ -14,6 +14,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { useEffect } from "react";
 import { postData } from "@/services/http-config";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -22,6 +23,7 @@ const formSchema = z.object({
 });
 
 export function Register() {
+  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,6 +37,7 @@ export function Register() {
     console.log("Register data:", data);
     const userData = await postData("/user/register", data);
     console.log("data", userData);
+    navigate("/auth/login");
     // API call can go here
   };
   useEffect(() => {

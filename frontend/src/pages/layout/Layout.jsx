@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/auth.context";
 
 export function Layout({ children }) {
   const { logout } = useAuth();
-  
+
   const routes = [
     {
       label: "Holdings",
@@ -31,6 +31,12 @@ export function Layout({ children }) {
     },
   ];
 
+  function onLogout() {
+    let response = confirm("Are you sure you want to logout?");
+    if (response) logout();
+    return;
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Navbar */}
@@ -52,7 +58,7 @@ export function Layout({ children }) {
                 {route.label}
               </Link>
             ))}
-            <Button variant="outline" size="sm" onClick={logout}>
+            <Button variant="outline" size="sm" onClick={onLogout}>
               Logout
             </Button>
           </nav>
