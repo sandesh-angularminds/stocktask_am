@@ -13,15 +13,6 @@ const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
   },
 });
 
-const connectToDatabase = async () => {
-  try {
-    await sequelize.authenticate();
-    console.log("✅ PostgreSQL connected via Sequelize.");
-  } catch (error) {
-    console.error("❌ Unable to connect to the database:", error);
-  }
-};
-
 const db = {};
 
 db.Sequelize = Sequelize;

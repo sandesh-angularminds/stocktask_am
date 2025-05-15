@@ -2,6 +2,13 @@ module.exports = (sequelize, DataTypes) => {
     const Holdings = sequelize.define(
       "Holdings",
       {
+        userId: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          validate: {
+            notEmpty: {msg: "Userid cannot be empty"}
+          }
+        },
         symbol: {
           type: DataTypes.STRING,
           allowNull: false,
@@ -21,6 +28,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       {
         // Virtual fields for derived values
+        paranoid: true,
+        timestamps: true,
         virtuals: {
           totalValue: {
             get() {
