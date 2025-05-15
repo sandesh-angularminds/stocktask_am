@@ -107,7 +107,7 @@ export function Addholding() {
             </div>
 
             <div>
-              <Label htmlFor="averageBuyPrice">averageBuyPrice</Label>
+              <Label htmlFor="averageBuyPrice">Average Buy Price</Label>
               <Input
                 id="averageBuyPrice"
                 type="number"
@@ -123,7 +123,7 @@ export function Addholding() {
             </div>
 
             <div>
-              <Label htmlFor="currentPrice">currentPrice</Label>
+              <Label htmlFor="currentPrice">Current Price</Label>
               <Input
                 id="currentPrice"
                 type="number"

@@ -21,7 +21,7 @@ export function Login() {
       const userData = await postData("/user/login", data);
       if (userData) {
         login(userData.data);
-        navigate("/holdings");
+        navigate("/dashboard");
       }
     } catch (err) {
       alert("Something went wrong.");
