@@ -1,10 +1,23 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth.context";
+import { useEffect, useState } from "react";
+import { getData } from "@/services/http-config";
 
 export function Layout({ children }) {
-  const { logout } = useAuth();
-
+  const { logout, user, setUser } = useAuth();
+  const [userData, setUserData] = useState();
+  const navigate = useNavigate();
+  useEffect(() => {
+    async function getUserData() {
+      const data = await getData("/user/self");
+      if (data) {
+        navigate("/dashboard");
+      }
+      setUser(data.data.user);
+    }
+    getUserData();
+  }, []);
   const routes = [
     {
       label: "Holdings",
@@ -30,7 +43,11 @@ export function Layout({ children }) {
       path: "/auth/register",
     },
   ];
+  useEffect(() => {
+    console.log("user data", user);
 
+    setUserData(user);
+  }, [user]);
   function onLogout() {
     let response = confirm("Are you sure you want to logout?");
     if (response) logout();
@@ -49,18 +66,38 @@ export function Layout({ children }) {
 
           {/* Nav Links */}
           <nav className="flex gap-4 items-center">
-            {[...routes, ...authRoutes].map((route) => (
-              <Link
-                key={route.path}
-                to={route.path}
-                className="text-sm text-muted-foreground hover:text-primary transition"
-              >
-                {route.label}
-              </Link>
-            ))}
-            <Button variant="outline" size="sm" onClick={onLogout}>
-              Logout
-            </Button>
+            {!user &&
+              [...authRoutes].map((route) => {
+                return (
+                  <Link
+                    key={route.path}
+                    to={route.path}
+                    className="text-sm text-muted-foreground hover:text-primary transition"
+                  >
+                    {route.label}
+                  </Link>
+                );
+              })}
+            {user &&
+              [...routes].map((route) => (
+                <Link
+                  key={route.path}
+                  to={route.path}
+                  className="text-sm text-muted-foreground hover:text-primary transition"
+                >
+                  {route.label}
+                </Link>
+              ))}
+            {user && (
+              <div className="flex justify-between items-center gap-1.5">
+                <p className="font-bold ">
+                  Hello {String(userData?.name).toUpperCase()}
+                </p>
+                <Button variant="outline" size="sm" onClick={onLogout}>
+                  Logout
+                </Button>
+              </div>
+            )}
           </nav>
         </div>
       </header>

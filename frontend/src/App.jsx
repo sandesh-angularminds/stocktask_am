@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Notfound } from "./pages/Notfound";
 import { Dashboard } from "./pages/Dashboard";
-import { Watchlist } from "./pages/Watchlist";
 import { Holdings } from "./pages/holdings/Holdings";
 import { Register } from "./pages/auth/Register";
 import { Login } from "./pages/auth/Login";
@@ -10,6 +9,9 @@ import { AuthProvider } from "./contexts/auth.context";
 import { Addholding } from "./pages/holdings/AddHoldings";
 import { EditHolding } from "./pages/holdings/EditHolding";
 import HoldingsLayout from "./pages/holdings/HoldingLayout";
+import { WatchlistLayout } from "./pages/watchlist/WatchlistLayout";
+import { AddWatchlist } from "./pages/watchlist/AddWatchlist";
+import { Watchlist } from "./pages/watchlist/Watchlist";
 
 function App() {
   return (
@@ -22,6 +24,10 @@ function App() {
               <Route index element={<Holdings />} />
               <Route path="add" element={<Addholding />} />{" "}
               <Route path="edit/:id" element={<EditHolding />} />
+            </Route>
+            <Route path="/watchlist" element={<WatchlistLayout />}>
+              <Route index element={<Watchlist />} />
+              <Route path="add" element={<AddWatchlist />} />
             </Route>
             <Route path="/auth/register" element={<Register />} />
             <Route path="/auth/login" element={<Login />} />

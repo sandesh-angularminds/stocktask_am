@@ -15,7 +15,7 @@ import { getData, delData } from "@/services/http-config";
 export const Holdings = () => {
   const navigate = useNavigate();
   let [holdingsData, setHoldingsData] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   async function deleteHolding(id) {
     try {
       let res = await delData("/holdings/" + id);
@@ -62,9 +62,9 @@ export const Holdings = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {holdingsData.map((data) => {
+          {holdingsData.map((data, index) => {
             return (
-              <TableRow>
+              <TableRow key={index}>
                 <TableCell className="font-medium">{data.id}</TableCell>
                 {/* <TableCell>{data.userId}</TableCell> */}
                 <TableCell>{data.symbol}</TableCell>
@@ -76,7 +76,15 @@ export const Holdings = () => {
                   {data.currentPrice}
                 </TableCell>
                 <TableCell className="text-right">{data.totalValue}</TableCell>
-                <TableCell className="text-right">{data.pnl}</TableCell>
+                <TableCell
+                  className={`text-right ${
+                    data.pnl < 0
+                      ? "text-red-700 "
+                      : "text-green-700 "
+                  }`}
+                >
+                  {data.pnl}
+                </TableCell>
                 <TableCell className="text-right">
                   <Link
                     to={`/holdings/edit/${data.id}`}

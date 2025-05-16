@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const login = (userData) => {
     console.log("userData", userData);
-    setUser(userData);
+    setUser(userData.user);
     localStorage.setItem(ACCESS_TOKEN_KEY, userData?.token ?? "null");
   };
   const logout = () => {
@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, setUser }}>
       {children}
     </AuthContext.Provider>
   );

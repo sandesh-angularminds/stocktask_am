@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export const Notfound = () => {
-  return (
-    <div>Notfound</div>
-  )
-}
+  return <div className="text-center font-bold">Not found</div>;
+};

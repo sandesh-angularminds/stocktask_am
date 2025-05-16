@@ -21,6 +21,14 @@ exports.login = catchAsync(async (req, res) => {
   // const user = await User.findByPk()
 });
 
+exports.getUser = catchAsync(async (req, res) => {
+  const userId = req.userId;
+  console.log("user", userId);
+  const user = await User.findByPk(userId);
+  if (!user) return res.status(401).json({ message: "Invalid credentials" });
+  res.status(200).json({ status: "success", user });
+});
+
 exports.createUser = catchAsync(async (req, res) => {
   try {
     const user = await User.create(req.body);

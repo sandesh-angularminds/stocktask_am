@@ -1,5 +1,6 @@
 const userRoutes = require("./user.routes");
-const holdingsRoutes = require('./holdings.route')
+const holdingsRoutes = require("./holdings.route");
+const watchlistRoutes = require("./watchlist.route");
 // const authRoutes = require('./auth.routes')
 const express = require("express");
 
@@ -15,13 +16,17 @@ const routes = [
     route: userRoutes,
   },
   {
-    path: '/holdings',
-    route: holdingsRoutes
-  }
+    path: "/holdings",
+    route: holdingsRoutes,
+  },
+  {
+    path: "/watchlist",
+    route: watchlistRoutes,
+  },
 ];
 
-routes.forEach(({route,path})=>{
-    router.use(path, route)
+routes.forEach(({ route, path }) => {
+  router.use(path, route);
 });
 
-module.exports = router
+module.exports = router;
