@@ -21,6 +21,8 @@ db.sequelize = sequelize;
 db.User = require("./user.model")(sequelize, DataTypes);
 db.Holdings = require("./holding.model")(sequelize, DataTypes);
 db.Watchlist = require("./watchlist.model")(sequelize, DataTypes);
+db.Transactionlog = require("./transactionlog.model")(sequelize, DataTypes);
+db.Bank = require("./bank.model")(sequelize, DataTypes);
 // Sync the database
 sequelize
   .sync()

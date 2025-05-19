@@ -1,16 +1,13 @@
 const userRoutes = require("./user.routes");
 const holdingsRoutes = require("./holdings.route");
 const watchlistRoutes = require("./watchlist.route");
+const transactionRoute = require("./transaction.route");
 // const authRoutes = require('./auth.routes')
 const express = require("express");
 
 const router = express.Router();
 
 const routes = [
-  // {
-  //   path: '/auth',
-  //   route: authRoutes
-  // },
   {
     path: "/user",
     route: userRoutes,
@@ -22,6 +19,10 @@ const routes = [
   {
     path: "/watchlist",
     route: watchlistRoutes,
+  },
+  {
+    path: "/bank",
+    route: transactionRoute,
   },
 ];
 
