@@ -21,10 +21,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getData, postData } from "@/services/http-config";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 export function AddMoney({ open, onOpenChange }) {
-  const { register, handleSubmit, setValue, getValues } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    control,
+    formState: { errors },
+  } = useForm();
   const [banks, setBanks] = useState();
   async function fetchBanks() {
     //fetch all banks;
@@ -41,7 +48,7 @@ export function AddMoney({ open, onOpenChange }) {
       const bankId = banks.filter((item) => {
         console.log("item", item);
         return item.name == data.name;
-      })[0];
+      })[0]?.id;
       console.log("baknkid", bankId);
       const payload = {
         ...data,
@@ -49,8 +56,8 @@ export function AddMoney({ open, onOpenChange }) {
         bankId,
       };
       console.log("payload", payload);
-      //   const newTransaction = await postData("/bank/deposit", payload);
-      //   console.log("new transaction", newTransaction);
+      const newTransaction = await postData("/bank/deposit", payload);
+      console.log("new transaction", newTransaction);
       onOpenChange(false);
     } catch (error) {
       console.log("error", error);
@@ -77,52 +84,68 @@ export function AddMoney({ open, onOpenChange }) {
           <div className="grid gap-4 py-4">
             {/* select banks  */}
             <div>
-              <Label htmlFor="name">Bank name </Label>
-              <Select {...register("name")}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select your bank" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Banks</SelectLabel>
-                    {banks &&
-                      banks.map((bank) => {
-                        return (
-                          <SelectItem key={bank.name} value={bank.name}>
-                            {bank.name}
-                          </SelectItem>
-                        );
-                      })}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="name">Bank Name</Label>
+              <Controller
+                name="name"
+                control={control}
+                rules={{ required: "Name is required" }}
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="w-full" id="name">
+                      <SelectValue placeholder="Select a Bank" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Stocks</SelectLabel>
+                        {banks.map((bank, index) => {
+                          return (
+                            <SelectItem key={index} value={bank.name}>
+                              {bank.name}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.name && (
+                <p className="text-red-500 text-sm">{errors.name.message}</p>
+              )}
             </div>
+
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="amount" className="text-right">
                 Amount
               </Label>
               <div>
-                <p className="flex justify-between">
-                  {" "}
-                  <span
-                    onClick={() => onSet(1000)}
-                    className="border cursor-pointer border-gray-400 px-4 py-2 rounded-xl mx-3"
-                  >
-                    1,000
-                  </span>{" "}
-                  <span
-                    onClick={() => onSet(5000)}
-                    className="border cursor-pointer border-gray-400 px-4 py-2 rounded-xl mx-3"
-                  >
-                    5,000
-                  </span>{" "}
-                  <span
-                    onClick={() => onSet(10000)}
-                    className="border cursor-pointer border-gray-400 px-4 py-2 rounded-xl mx-3"
-                  >
-                    10,000
-                  </span>{" "}
-                </p>
+              <p className="flex justify-between">
+                    {" "}
+                    <span
+                      onClick={() => onSet(1000)}
+                      className="border cursor-pointer border-gray-400 px-2 py-1 rounded-xl me-3"
+                    >
+                      1,000
+                    </span>{" "}
+                    <span
+                      onClick={() => onSet(5000)}
+                      className="border cursor-pointer border-gray-400 px-2 py-1 rounded-xl me-3"
+                    >
+                      5,000
+                    </span>{" "}
+                    <span
+                      onClick={() => onSet(10000)}
+                      className="border cursor-pointer border-gray-400 px-2 py-1 rounded-xl me-3"
+                    >
+                      10,000
+                    </span>{" "}
+                    <span
+                      onClick={() => onSet(20000)}
+                      className="border cursor-pointer border-gray-400 px-2 py-1 rounded-xl"
+                    >
+                      20,000
+                    </span>{" "}
+                  </p>
               </div>
               <Input
                 id="amount"
