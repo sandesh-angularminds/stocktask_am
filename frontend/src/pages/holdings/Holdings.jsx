@@ -43,11 +43,11 @@ export const Holdings = () => {
   }
   return (
     <div>
-      <div className="flex justify-end">
-        <Button onClick={() => onAddHolding()}>Add Holding</Button>
+      <div className="text-center ">
+        <h3 className="text-2xl font-bold mb-3">Your Holdings</h3>
       </div>
       <Table>
-        <TableCaption>A list of your holdings.</TableCaption>
+        {/* <TableCaption>A list of your holdings.</TableCaption> */}
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Id</TableHead>
@@ -78,20 +78,10 @@ export const Holdings = () => {
                 <TableCell className="text-right">{data.totalValue}</TableCell>
                 <TableCell
                   className={`text-right ${
-                    data.pnl < 0
-                      ? "text-red-700 "
-                      : "text-green-700 "
+                    data.pnl < 0 ? "text-red-700 " : "text-green-700"
                   }`}
                 >
                   {data.pnl}
-                </TableCell>
-                <TableCell className="text-right">
-                  <Link
-                    to={`/holdings/edit/${data.id}`}
-                    className="border-2 border-black px-4 py-2 rounded-lg"
-                  >
-                    Edit{" "}
-                  </Link>
                 </TableCell>
                 <TableCell className="text-right">
                   <Button

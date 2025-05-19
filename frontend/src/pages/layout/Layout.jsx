@@ -3,11 +3,18 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth.context";
 import { useEffect, useState } from "react";
 import { getData } from "@/services/http-config";
+import { AddMoney } from "../profile/AddMoney";
+import { ProfileDropdown } from "../profile/ProfileDropdown";
+import { Bank } from "../bank/Bank";
 
 export function Layout({ children }) {
   const { logout, user, setUser } = useAuth();
   const [userData, setUserData] = useState();
+
   const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isAddMoneyModal, setIsAddMoneyModal] = useState(false);
+  const [isAddBankModal, setIsAddBankModal] = useState(false);
   useEffect(() => {
     async function getUserData() {
       const data = await getData("/user/self");
@@ -18,6 +25,7 @@ export function Layout({ children }) {
     }
     getUserData();
   }, []);
+
   const routes = [
     {
       label: "Holdings",
@@ -48,11 +56,6 @@ export function Layout({ children }) {
 
     setUserData(user);
   }, [user]);
-  function onLogout() {
-    let response = confirm("Are you sure you want to logout?");
-    if (response) logout();
-    return;
-  }
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -90,12 +93,15 @@ export function Layout({ children }) {
               ))}
             {user && (
               <div className="flex justify-between items-center gap-1.5">
-                <p className="font-bold ">
-                  Hello {String(userData?.name).toUpperCase()}
-                </p>
-                <Button variant="outline" size="sm" onClick={onLogout}>
-                  Logout
-                </Button>
+                <div>
+                  <ProfileDropdown
+                    open={dropdownOpen}
+                    isAddMoneyModal={isAddBankModal}
+                    setOpen={setDropdownOpen}
+                    setIsAddMoneyModal={setIsAddMoneyModal}
+                    setIsAddBankModal={setIsAddBankModal}
+                  />
+                </div>
               </div>
             )}
           </nav>
@@ -103,7 +109,12 @@ export function Layout({ children }) {
       </header>
 
       {/* Page Content */}
-      <main className="container mx-auto px-4 py-6">{children}</main>
+      <main className="container mx-auto px-4 py-6">
+        {children}
+        {/* all dialogs */}
+        <AddMoney open={isAddMoneyModal} onOpenChange={setIsAddMoneyModal} />
+        <Bank open={isAddBankModal} onOpenChange={setIsAddBankModal} />
+      </main>
     </div>
   );
 }
