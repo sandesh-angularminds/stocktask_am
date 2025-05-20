@@ -8,7 +8,7 @@ import { ProfileDropdown } from "../profile/ProfileDropdown";
 import { Bank } from "../bank/Bank";
 
 export function Layout({ children }) {
-  const { logout, user, setUser } = useAuth();
+  const { logout, user, setUser, setNewTotalBalance } = useAuth();
   const [userData, setUserData] = useState();
 
   const navigate = useNavigate();
@@ -22,6 +22,7 @@ export function Layout({ children }) {
         navigate("/dashboard");
       }
       setUser(data.data.user);
+      setNewTotalBalance();
     }
     getUserData();
   }, []);
@@ -56,8 +57,6 @@ export function Layout({ children }) {
     },
   ];
   useEffect(() => {
-    console.log("user data", user);
-
     setUserData(user);
   }, [user]);
 

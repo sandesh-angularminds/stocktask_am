@@ -1,5 +1,5 @@
 import { getData } from "@/services/http-config";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 let AuthContext = createContext();
@@ -7,11 +7,21 @@ let AuthContext = createContext();
 const ACCESS_TOKEN_KEY = "accessToken";
 
 export const AuthProvider = ({ children }) => {
-
-
-  
   const [user, setUser] = useState(null);
+
   const navigate = useNavigate();
+
+  //set user totalBalance
+  const setNewTotalBalance = async () => {
+    setTimeout(async () => {
+      const bankData = await getData("/bank");
+      console.log("set balance", bankData);
+      setUser((prev) => {
+        return { ...prev, totalBalance: bankData.data.totalBalance };
+      });
+    }, 2000);
+  };
+
   const login = (userData) => {
     console.log("userData", userData);
     setUser(userData.user);
@@ -22,9 +32,10 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     navigate("/auth/login");
   };
-
   return (
-    <AuthContext.Provider value={{ user, login, logout, setUser }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, setUser, setNewTotalBalance }}
+    >
       {children}
     </AuthContext.Provider>
   );
