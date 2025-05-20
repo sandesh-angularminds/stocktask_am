@@ -29,11 +29,11 @@ export const Bank = ({ open, onOpenChange }) => {
     <div>
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogTrigger asChild>
-          <Button variant="outline"></Button>
+          <Button className={"hidden"} variant="outline"></Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Add Bank Account</DialogTitle>
+            <DialogTitle>Add New Bank Account</DialogTitle>
             {/* <DialogDescription>
             Make changes to your profile here. Click save when you're done.
           </DialogDescription> */}
@@ -97,7 +97,7 @@ export const Bank = ({ open, onOpenChange }) => {
           </div> */}
             </div>
             <DialogFooter>
-              <Button type="submit">Add money</Button>
+              <Button type="submit">Add bank</Button>
             </DialogFooter>
           </form>
         </DialogContent>

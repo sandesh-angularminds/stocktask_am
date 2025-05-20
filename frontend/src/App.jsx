@@ -12,30 +12,36 @@ import HoldingsLayout from "./pages/holdings/HoldingLayout";
 import { WatchlistLayout } from "./pages/watchlist/WatchlistLayout";
 import { AddWatchlist } from "./pages/watchlist/AddWatchlist";
 import { Watchlist } from "./pages/watchlist/Watchlist";
+import { StockProvider } from "./contexts/stock.context";
+import { StocksListing } from "./pages/stocks/StocksListing";
 
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <Layout>
-          <Routes>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/holdings" element={<HoldingsLayout />}>
-              <Route index element={<Holdings />} />
-              <Route path="add" element={<Addholding />} />{" "}
-              <Route path="edit/:id" element={<EditHolding />} />
-            </Route>
-            <Route path="/watchlist" element={<WatchlistLayout />}>
-              <Route index element={<Watchlist />} />
-              <Route path="add" element={<AddWatchlist />} />
-            </Route>
-            <Route path="/auth/register" element={<Register />} />
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/" element={<Navigate to="/auth/register" />} />
-            <Route path="*" element={<Notfound />} />
-          </Routes>
-        </Layout>
-      </AuthProvider>
+      <StockProvider>
+        <AuthProvider>
+          <Layout>
+            <Routes>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/stocks" element={<StocksListing />} />
+              <Route path="/holdings" element={<HoldingsLayout />}>
+                <Route index element={<Holdings />} />
+                <Route path="add" element={<Addholding />} />{" "}
+                <Route path="edit/:id" element={<EditHolding />} />
+              </Route>
+              <Route path="/watchlist" element={<WatchlistLayout />}>
+                <Route index element={<Watchlist />} />
+                <Route path="add" element={<AddWatchlist />} />
+              </Route>
+              <Route path="/auth/register" element={<Register />} />
+
+              <Route path="/auth/login" element={<Login />} />
+              <Route path="/" element={<Navigate to="/auth/register" />} />
+              <Route path="*" element={<Notfound />} />
+            </Routes>
+          </Layout>
+        </AuthProvider>
+      </StockProvider>
     </BrowserRouter>
   );
 }

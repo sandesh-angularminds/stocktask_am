@@ -1,3 +1,4 @@
+import { getData } from "@/services/http-config";
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,6 +7,9 @@ let AuthContext = createContext();
 const ACCESS_TOKEN_KEY = "accessToken";
 
 export const AuthProvider = ({ children }) => {
+
+
+  
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const login = (userData) => {

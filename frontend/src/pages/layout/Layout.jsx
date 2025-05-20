@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth.context";
 import { useEffect, useState } from "react";
 import { getData } from "@/services/http-config";
-import { AddMoney } from "../profile/AddMoney";
+import { AddMoney } from "../bank/AddMoney";
 import { ProfileDropdown } from "../profile/ProfileDropdown";
 import { Bank } from "../bank/Bank";
 
@@ -38,6 +38,10 @@ export function Layout({ children }) {
     {
       label: "Dashboard",
       path: "/dashboard",
+    },
+    {
+      label: "Stocks",
+      path: "/stocks",
     },
   ];
 

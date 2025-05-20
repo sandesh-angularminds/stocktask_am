@@ -71,7 +71,7 @@ export function AddMoney({ open, onOpenChange }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline"></Button>
+        <Button variant="outline" className={"hidden"} ></Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
