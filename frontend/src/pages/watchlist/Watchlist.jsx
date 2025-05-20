@@ -22,19 +22,16 @@ export const Watchlist = () => {
   const [isBuyStock, setIsBuyStock] = useState();
   async function getAllWatchlists() {
     const data = await getData("/watchlist");
-    console.log("watchlist data", data.data);
     setWatchlistData(data.data);
   }
   useEffect(() => {
     getAllWatchlists();
   }, []);
   async function buyStock(stock) {
-    console.log("selected stock", stock);
     setSelectedStock(stock);
     setIsBuyStock(true);
   }
   async function deleteWatchlist(id) {
-    console.log("delete called");
     await delData(`/watchlist/${id}`);
     getAllWatchlists();
     // alert("delete success...");

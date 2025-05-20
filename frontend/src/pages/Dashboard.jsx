@@ -8,12 +8,12 @@ export const Dashboard = () => {
   async function getHoldingsDetails() {
     setLoading(true);
     try {
-      console.log("holding data", holdingsData);
+
       holdingsData = await getData("/holdings");
       setHoldingsData(holdingsData.data);
       setLoading(false);
     } catch (error) {
-      console.log("error", error);
+
     }
   }
   useEffect(() => {

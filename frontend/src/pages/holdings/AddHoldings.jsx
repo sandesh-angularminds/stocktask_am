@@ -36,13 +36,11 @@ export function Addholding() {
     },
   ];
   const onSubmit = async (data) => {
-    console.log("data", data);
     try {
       const holdingsData = await postData("/holdings", data);
       navigate("/holdings");
     } catch (err) {
       alert("Something wrong");
-      console.log("err", err);
     }
   };
   return (

@@ -44,24 +44,20 @@ export function AddMoney({ open, onOpenChange }) {
 
   async function onAddMoney(data) {
     try {
-      console.log("onAdd money", banks, data);
       const bankId = banks.filter((item) => {
-        console.log("item", item);
         return item.name == data.name;
       })[0]?.id;
-      console.log("baknkid", bankId);
+
       const payload = {
         ...data,
         action: "deposit",
         bankId,
       };
-      console.log("payload", payload);
+
       const newTransaction = await postData("/bank/deposit", payload);
-      console.log("new transaction", newTransaction);
+
       onOpenChange(false);
-    } catch (error) {
-      console.log("error", error);
-    }
+    } catch (error) {}
     // onOpenChange(false);
   }
   function onSet(amount) {
@@ -71,7 +67,7 @@ export function AddMoney({ open, onOpenChange }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline" className={"hidden"} ></Button>
+        <Button variant="outline" className={"hidden"}></Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -119,33 +115,33 @@ export function AddMoney({ open, onOpenChange }) {
                 Amount
               </Label>
               <div>
-              <p className="flex justify-between">
-                    {" "}
-                    <span
-                      onClick={() => onSet(1000)}
-                      className="border cursor-pointer border-gray-400 px-2 py-1 rounded-xl me-3"
-                    >
-                      1,000
-                    </span>{" "}
-                    <span
-                      onClick={() => onSet(5000)}
-                      className="border cursor-pointer border-gray-400 px-2 py-1 rounded-xl me-3"
-                    >
-                      5,000
-                    </span>{" "}
-                    <span
-                      onClick={() => onSet(10000)}
-                      className="border cursor-pointer border-gray-400 px-2 py-1 rounded-xl me-3"
-                    >
-                      10,000
-                    </span>{" "}
-                    <span
-                      onClick={() => onSet(20000)}
-                      className="border cursor-pointer border-gray-400 px-2 py-1 rounded-xl"
-                    >
-                      20,000
-                    </span>{" "}
-                  </p>
+                <p className="flex justify-between">
+                  {" "}
+                  <span
+                    onClick={() => onSet(1000)}
+                    className="border cursor-pointer border-gray-400 px-2 py-1 rounded-xl me-3"
+                  >
+                    1,000
+                  </span>{" "}
+                  <span
+                    onClick={() => onSet(5000)}
+                    className="border cursor-pointer border-gray-400 px-2 py-1 rounded-xl me-3"
+                  >
+                    5,000
+                  </span>{" "}
+                  <span
+                    onClick={() => onSet(10000)}
+                    className="border cursor-pointer border-gray-400 px-2 py-1 rounded-xl me-3"
+                  >
+                    10,000
+                  </span>{" "}
+                  <span
+                    onClick={() => onSet(20000)}
+                    className="border cursor-pointer border-gray-400 px-2 py-1 rounded-xl"
+                  >
+                    20,000
+                  </span>{" "}
+                </p>
               </div>
               <Input
                 id="amount"

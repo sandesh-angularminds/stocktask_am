@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
   const setNewTotalBalance = async () => {
     setTimeout(async () => {
       const bankData = await getData("/bank");
-      console.log("set balance", bankData);
+      
       setUser((prev) => {
         return { ...prev, totalBalance: bankData.data.totalBalance };
       });
@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = (userData) => {
-    console.log("userData", userData);
+    
     setUser(userData.user);
     localStorage.setItem(ACCESS_TOKEN_KEY, userData?.token ?? "null");
   };

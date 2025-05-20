@@ -40,7 +40,7 @@ export const StockProvider = ({ children }) => {
         return { ...item, currentPrice: getRandomVal() };
       });
       setStock(stocksD);
-    }, 5000);
+    }, 3000);
   }
   useEffect(() => {
     setStock(stocksData);

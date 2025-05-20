@@ -12,9 +12,11 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { getData, delData } from "@/services/http-config";
 import { SellHoldings } from "./SellHoldings";
+import { useStock } from "@/contexts/stock.context";
 
 export const Holdings = () => {
   const navigate = useNavigate();
+  const { stocks } = useStock();
   let [holdingsData, setHoldingsData] = useState([]);
   const [selectedStock, setSelectedStock] = useState({});
   const [isSellStock, setIsSellStock] = useState(false);
@@ -22,21 +24,11 @@ export const Holdings = () => {
   async function onSellStocks(stock) {
     setSelectedStock(stock);
     setIsSellStock(true);
-    // try {
-
-    //   let res = await delData("/holdings/" + id);
-
-    //   getHoldingsDetails();
-    //   console.log("del hol", res);
-    // } catch (error) {
-    //   alert("delete holding error");
-    // }
   }
 
   async function getHoldingsDetails() {
     try {
       holdingsData = await getData("/holdings");
-      console.log("holding data", holdingsData);
       setHoldingsData(holdingsData.data);
     } catch (error) {
       console.log("error", error);
@@ -45,9 +37,30 @@ export const Holdings = () => {
   useEffect(() => {
     getHoldingsDetails();
   }, []);
-  function onAddHolding() {
-    navigate("/holdings/add");
-  }
+
+  useEffect(() => {
+    getData();
+    let newData = holdingsData.map((item) => {
+      let ele = stocks.filter((el) => {
+        if (el.id == item.stockId) {
+          return el;
+        }
+      })[0];
+      console.log("ele", ele);
+      let pnl = Number(
+        +item.quantity * +ele.currentPrice -
+          +item.quantity * +item.averageBuyPrice
+      ).toFixed(2);
+      let currPrice = ele.currentPrice;
+      console.log("pnl", pnl, "currprice", currPrice);
+      return { ...item, pnl: pnl, currentPrice: currPrice };
+    });
+    setHoldingsData(newData);
+  }, [stocks]);
+  useEffect(() => {
+    getHoldingsDetails();
+  }, [isSellStock]);
+
   return (
     <div>
       <div className="text-center ">
@@ -82,7 +95,9 @@ export const Holdings = () => {
                 <TableCell className="text-right">
                   {data.currentPrice}
                 </TableCell>
-                <TableCell className="text-right">{data.totalValue}</TableCell>
+                <TableCell className="text-right">
+                  {Number(+data.currentPrice * +data.quantity).toFixed(2)}
+                </TableCell>
                 <TableCell
                   className={`text-right ${
                     data.pnl < 0 ? "text-red-700 " : "text-green-700"

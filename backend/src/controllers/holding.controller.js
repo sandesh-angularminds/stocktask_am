@@ -5,7 +5,7 @@ const catchAsync = require("./../utils/catchAsync");
 exports.createHolding = catchAsync(async (req, res) => {
   const userId = req.userId;
   const { symbol, quantity, averageBuyPrice, currentPrice, stockId } = req.body;
-  console.log("symbol", userId);
+
   const newHolding = await Holdings.create({
     userId: String(userId),
     symbol,
@@ -19,14 +19,13 @@ exports.createHolding = catchAsync(async (req, res) => {
 
 exports.getHolding = catchAsync(async (req, res) => {
   const id = req.params.id;
-  console.log("id", id);
+
   let holding = await Holdings.findByPk({ stockId: id });
   res.status(201).json(holding);
 });
 
 // Get all holdings
 exports.getAllHoldings = catchAsync(async (req, res) => {
-  console.log("get holdings");
   let holdings = await Holdings.findAll({
     where: { userId: String(req.userId) },
   });
@@ -41,15 +40,18 @@ exports.getAllHoldings = catchAsync(async (req, res) => {
 exports.updateHoldings = catchAsync(async (req, res) => {
   const { id } = req.params;
   const currHolding = await Holdings.findOne({ where: { stockId: id } });
-  console.log("curr holding", currHolding);
+
   if (currHolding.quantity == req.body.quantity) {
     currHolding.destroy();
     res.status(200).json({ status: "success" });
     return;
   }
-  const [updated] = await Holdings.update(req.body, {
-    where: { stockId: id },
-  });
+  const [updated] = await Holdings.update(
+    { ...req.body, quantity: +currHolding.quantity - +req.body.quantity },
+    {
+      where: { stockId: id },
+    }
+  );
 
   if (updated) {
     const updatedHolding = await Holdings.findByPk(id);

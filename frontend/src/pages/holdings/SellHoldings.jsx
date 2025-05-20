@@ -35,49 +35,25 @@ export function SellHoldings({ stock, open, onOpenChange }) {
     defaultValues: {},
   });
   useEffect(() => {
-    console.log("stock=>", stock);
     let currStock = stocks.filter((item) => {
-      console.log("id", stock.stockId);
       if (item.id === Number(stock.stockId)) {
         return item;
       }
     });
-    console.log("current stock==>", currStock);
+
     setValue("symbol", stock.symbol);
     setValue("currentPrice", currStock[0]?.currentPrice || 0);
     let qty = getValues("quantity") || 0;
     setTotalAmt(Number(qty * currStock[0]?.currentPrice).toFixed(2));
   }, [stock, stocks]);
-  async function onBuyStock(data) {
-    try {
-      let averageBuyPrice = data.currentPrice;
-      const holdingsData = await postData("/holdings", {
-        ...data,
-        averageBuyPrice,
-      });
-
-      await postData("/bank/withdraw", {
-        amount: totalAmt,
-        action: "withdraw",
-      });
-      setNewTotalBalance();
-      navigate("/holdings");
-    } catch (err) {
-      alert("Something wrong");
-      console.log("err", err);
-    }
-  }
-  useEffect(() => {
-    console.log("buy stock", user);
-  }, [totalAmt]);
+  useEffect(() => {}, [totalAmt]);
 
   async function onSellQuantity(data) {
-    console.log("sell quantity", data, "stockId", stock.stockId);
     try {
       let averageBuyPrice = data.currentPrice;
       const holdingsData = await putData(`/holdings/${stock.stockId}`, {
         ...data,
-        quantity: stock.quantity - data.quantity,
+        quantity: data.quantity,
         currentPrice: data.currentPrice,
       });
 
@@ -85,8 +61,9 @@ export function SellHoldings({ stock, open, onOpenChange }) {
         amount: totalAmt,
         action: "deposit",
       });
-      setNewTotalBalance();
+      onOpenChange(false);
       navigate("/holdings");
+      setNewTotalBalance();
     } catch (err) {
       alert("Something wrong");
       console.log("err", err);
@@ -100,7 +77,7 @@ export function SellHoldings({ stock, open, onOpenChange }) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Buy Stock</DialogTitle>
+          <DialogTitle>Sell Stock</DialogTitle>
           {/* <DialogDescription>
             Make changes to your profile here. Click save when you're done.
           </DialogDescription> */}
@@ -170,7 +147,7 @@ export function SellHoldings({ stock, open, onOpenChange }) {
               disabled={maxQuantity < getValues("quantity")}
               type="submit"
             >
-              Sell stock {getValues("quantity")} {maxQuantity}
+              Sell stock ({getValues("quantity")}/{maxQuantity})
             </Button>
           </DialogFooter>
         </form>
