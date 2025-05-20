@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/auth.context";
 import { useStock } from "@/contexts/stock.context";
-import { postData } from "@/services/http-config";
+import { postData, putData } from "@/services/http-config";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 export function SellHoldings({ stock, open, onOpenChange }) {
   const { stocks = [] } = useStock();
   const { user, setNewTotalBalance } = useAuth();
+  const maxQuantity = stock?.quantity;
   const [totalAmt, setTotalAmt] = useState(0);
   const navigate = useNavigate();
   const {
@@ -34,11 +35,14 @@ export function SellHoldings({ stock, open, onOpenChange }) {
     defaultValues: {},
   });
   useEffect(() => {
+    console.log("stock=>", stock);
     let currStock = stocks.filter((item) => {
-      if (item.id === stock.id) {
+      console.log("id", stock.stockId);
+      if (item.id === Number(stock.stockId)) {
         return item;
       }
     });
+    console.log("current stock==>", currStock);
     setValue("symbol", stock.symbol);
     setValue("currentPrice", currStock[0]?.currentPrice || 0);
     let qty = getValues("quantity") || 0;
@@ -66,6 +70,29 @@ export function SellHoldings({ stock, open, onOpenChange }) {
   useEffect(() => {
     console.log("buy stock", user);
   }, [totalAmt]);
+
+  async function onSellQuantity(data) {
+    console.log("sell quantity", data, "stockId", stock.stockId);
+    try {
+      let averageBuyPrice = data.currentPrice;
+      const holdingsData = await putData(`/holdings/${stock.stockId}`, {
+        ...data,
+        quantity: stock.quantity - data.quantity,
+        currentPrice: data.currentPrice,
+      });
+
+      await postData("/bank/deposit", {
+        amount: totalAmt,
+        action: "deposit",
+      });
+      setNewTotalBalance();
+      navigate("/holdings");
+    } catch (err) {
+      alert("Something wrong");
+      console.log("err", err);
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
@@ -79,13 +106,13 @@ export function SellHoldings({ stock, open, onOpenChange }) {
           </DialogDescription> */}
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onBuyStock)}>
+        <form onSubmit={handleSubmit(onSellQuantity)}>
           <div className="">
             <div className="items-center gap-4 mb-3">
               <Label htmlFor="symbol" className="text-right pb-2">
                 Stock Symbol
               </Label>
-              <Input id="symbol" {...register("symbol")} />
+              <Input disabled={true} id="symbol" {...register("symbol")} />
             </div>
             <div className="items-center gap-4 mb-3">
               <Label htmlFor="quantity" className="text-right pb-2">
@@ -105,6 +132,7 @@ export function SellHoldings({ stock, open, onOpenChange }) {
                       field.onChange(e); // important to call this to update form state
                       let prevQty = getValues("quantity");
                       setValue("quantity", e.target.value);
+
                       setTotalAmt(
                         Number(prevQty * getValues("currentPrice")).toFixed(2)
                       );
@@ -129,17 +157,20 @@ export function SellHoldings({ stock, open, onOpenChange }) {
                 {" "}
                 Total amount:- <span>{totalAmt} </span>
               </p>
-              {totalAmt > user?.totalBalance && (
+              {maxQuantity < getValues("quantity") && (
                 <p className="text-red-600">
                   {" "}
-                  Total amount is less than needed
+                  You have less qty than you enterned
                 </p>
               )}
             </div>
           </div>
           <DialogFooter>
-            <Button disabled={totalAmt > user?.totalBalance} type="submit">
-              Buy Stock
+            <Button
+              disabled={maxQuantity < getValues("quantity")}
+              type="submit"
+            >
+              Sell stock {getValues("quantity")} {maxQuantity}
             </Button>
           </DialogFooter>
         </form>

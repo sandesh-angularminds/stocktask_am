@@ -1,35 +1,39 @@
 module.exports = (sequelize, DataTypes) => {
-    const Holdings = sequelize.define(
-      "Holdings",
-      {
-        userId: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          validate: {
-            notEmpty: {msg: "Userid cannot be empty"}
-          }
-        },
-        symbol: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
-        quantity: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-        },
-        averageBuyPrice: {
-          type: DataTypes.FLOAT,
-          allowNull: false,
-        },
-        currentPrice: {
-          type: DataTypes.FLOAT,
-          allowNull: false,
+  const Holdings = sequelize.define(
+    "Holdings",
+    {
+      userId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Userid cannot be empty" },
         },
       },
-      {
-        // Virtual fields for derived values
-        paranoid: true,
-        timestamps: true,
+      stockId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      symbol: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      averageBuyPrice: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      currentPrice: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+    },
+    {
+      // Virtual fields for derived values
+      paranoid: true,
+      timestamps: true,
       //   virtuals: {
       //     totalValue: {
       //       get() {
@@ -43,9 +47,8 @@ module.exports = (sequelize, DataTypes) => {
       //       },
       //     },
       //   },
-      }
-    );
-  
-    return Holdings;
-  };
-  
+    }
+  );
+
+  return Holdings;
+};

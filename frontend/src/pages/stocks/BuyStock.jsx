@@ -40,6 +40,7 @@ export function BuyStocks({ stock, open, onOpenChange }) {
       }
     });
     setValue("symbol", stock.symbol);
+    setValue("stockId", stock.id);
     setValue("currentPrice", currStock[0]?.currentPrice || 0);
     let qty = getValues("quantity") || 0;
     setTotalAmt(Number(qty * currStock[0]?.currentPrice).toFixed(2));
@@ -82,10 +83,16 @@ export function BuyStocks({ stock, open, onOpenChange }) {
         <form onSubmit={handleSubmit(onBuyStock)}>
           <div className="">
             <div className="items-center gap-4 mb-3">
+              <Label htmlFor="stockid" className="text-right pb-2">
+                Stock Id
+              </Label>
+              <Input disabled={true} id="stockid" {...register("stockId")} />
+            </div>
+            <div className="items-center gap-4 mb-3">
               <Label htmlFor="symbol" className="text-right pb-2">
                 Stock Symbol
               </Label>
-              <Input id="symbol" {...register("symbol")} />
+              <Input disabled={true} id="symbol" {...register("symbol")} />
             </div>
             <div className="items-center gap-4 mb-3">
               <Label htmlFor="quantity" className="text-right pb-2">
