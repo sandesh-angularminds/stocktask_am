@@ -10,14 +10,18 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/contexts/auth.context";
 import { useStock } from "@/contexts/stock.context";
+import { postData } from "@/services/http-config";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export function BuyStocks({ stock, open, onOpenChange }) {
   const { stocks = [] } = useStock();
+  const { user, setNewTotalBalance } = useAuth();
   const [totalAmt, setTotalAmt] = useState(0);
-  
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
@@ -25,29 +29,43 @@ export function BuyStocks({ stock, open, onOpenChange }) {
     reset,
     setValue,
     getValues,
+    control,
   } = useForm({
-    defaultValues: {
-      name: stock.symbol || "",
-    },
+    defaultValues: {},
   });
   useEffect(() => {
-    console.log("stock", stocks);
-    setValue("symbol", stock.symbol);
     let currStock = stocks.filter((item) => {
       if (item.id === stock.id) {
-        console.log("stock slected", item);
         return item;
       }
     });
-
-    console.log("currstock", currStock);
+    setValue("symbol", stock.symbol);
     setValue("currentPrice", currStock[0]?.currentPrice || 0);
     let qty = getValues("quantity") || 0;
     setTotalAmt(Number(qty * currStock[0]?.currentPrice).toFixed(2));
   }, [stock, stocks]);
-  function onBuyStock(data) {
-    console.log("onbuy stock", data);
+  async function onBuyStock(data) {
+    try {
+      let averageBuyPrice = data.currentPrice;
+      const holdingsData = await postData("/holdings", {
+        ...data,
+        averageBuyPrice,
+      });
+
+      await postData("/bank/withdraw", {
+        amount: totalAmt,
+        action: "withdraw",
+      });
+      setNewTotalBalance();
+      navigate("/holdings");
+    } catch (err) {
+      alert("Something wrong");
+      console.log("err", err);
+    }
   }
+  useEffect(() => {
+    console.log("buy stock", user);
+  }, [totalAmt]);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
@@ -73,7 +91,27 @@ export function BuyStocks({ stock, open, onOpenChange }) {
               <Label htmlFor="quantity" className="text-right pb-2">
                 Quantity
               </Label>
-              <Input id="quantity" {...register("quantity")} />
+              {/* <Input id="quantity" {...register("quantity")} /> */}
+              <Controller
+                name="quantity"
+                control={control}
+                className="w-full"
+                defaultValue="0"
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    className="w-full py-1 px-3"
+                    onChange={(e) => {
+                      field.onChange(e); // important to call this to update form state
+                      let prevQty = getValues("quantity");
+                      setValue("quantity", e.target.value);
+                      setTotalAmt(
+                        Number(prevQty * getValues("currentPrice")).toFixed(2)
+                      );
+                    }}
+                  />
+                )}
+              />
             </div>
             <div className="items-center gap-4 mb-3">
               <Label htmlFor="currentPrice" className="text-right pb-2">
@@ -91,10 +129,18 @@ export function BuyStocks({ stock, open, onOpenChange }) {
                 {" "}
                 Total amount:- <span>{totalAmt} </span>
               </p>
+              {totalAmt > user?.totalBalance && (
+                <p className="text-red-600">
+                  {" "}
+                  Total amount is less than needed
+                </p>
+              )}
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit">Buy Stock</Button>
+            <Button disabled={totalAmt > user?.totalBalance} type="submit">
+              Buy Stock
+            </Button>
           </DialogFooter>
         </form>
         {/* <DialogFooter>

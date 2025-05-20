@@ -27,7 +27,7 @@ export function ProfileDropdown({
 }) {
   const [money, setMoney] = useState(0);
   const [position, setPosition] = useState("bottom");
-  const { logout, user } = useAuth();
+  const { logout, user, setNewTotalBalance } = useAuth();
   function onLogout() {
     let response = confirm("Are you sure you want to logout?");
     if (response) logout();
@@ -35,13 +35,10 @@ export function ProfileDropdown({
   }
 
   useEffect(() => {
-    async function fetchCurretBankBalance() {
-      const bankData = await getData("/bank/");
-      console.log("bank data", bankData.data);
-      setMoney(bankData.data.totalBalance);
-    }
-    fetchCurretBankBalance();
-  }, [isAddMoneyModal]);
+    // setNewTotalBalance();
+    console.log("total", user);
+    setMoney(user.totalBalance);
+  }, [isAddMoneyModal, user]);
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>

@@ -38,7 +38,7 @@ const depositAmount = catchAsync(async (req, res) => {
     throw new ApiError(`Deposit action and amount is required!!!`);
   }
   const bankInfo = await Bank.findOne({
-    where: { id: bankId },
+    where: { userId: userId },
   });
   if (!bankInfo) {
     throw new ApiError(404, "Bank not found!!!");
@@ -51,7 +51,7 @@ const depositAmount = catchAsync(async (req, res) => {
       userId,
       totalBalance: currBalance,
     },
-    { where: { id: bankId } }
+    { where: { userId: userId } }
   );
 
   const newTransaction = await Transactionlog.create({
@@ -65,12 +65,15 @@ const depositAmount = catchAsync(async (req, res) => {
 
 const withdrawAmount = catchAsync(async (req, res) => {
   const userId = req.userId;
-  const { action, amount, bankId } = req.body;
+  const { action, amount } = req.body;
+  console.log("amout", amount);
   if (action !== "withdraw" && !amount) {
     throw new ApiError(404, `Withdraw action and amount is required!!!`);
   }
   const bankInfo = await Bank.findOne({
-    id: bankId,
+    where: {
+      userId: String(userId),
+    },
   });
   if (!bankInfo) {
     throw new ApiError(404, "Bank account not found!!!");
@@ -78,14 +81,15 @@ const withdrawAmount = catchAsync(async (req, res) => {
   if (amount > bankInfo.totalBalance) {
     throw new ApiError(400, "Total balance is less than you amount!!!");
   }
-  const currBalance = totalBalance - amount;
+  console.log("user id", bankInfo.totalBalance, "amt", amount);
+  const currBalance = parseInt(bankInfo.totalBalance - amount);
   const newBankAction = await Bank.update(
     {
-      name,
+      name: bankInfo.name,
       userId,
       totalBalance: currBalance,
     },
-    { where: { id: bankId } }
+    { where: { userId: String(userId) } }
   );
 
   const newTransaction = await Transactionlog.create({

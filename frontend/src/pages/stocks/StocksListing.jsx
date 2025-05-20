@@ -24,9 +24,14 @@ export function StocksListing() {
       setSelectedStock(stock);
     }
   }
-  function addToWatchlist(stock) {
-    if (stock) {
-      let res = postData("/");
+  async function addToWatchlist(stock) {
+    console.log("stock", stock);
+    try {
+      const watchlist = await postData("/watchlist", { symbol: stock.symbol });
+      navigate("/watchlist");
+    } catch (err) {
+      alert("Something wrong");
+      console.log("err", err);
     }
   }
   return (
