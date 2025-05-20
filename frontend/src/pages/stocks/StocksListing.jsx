@@ -13,10 +13,12 @@ import { useStock } from "@/contexts/stock.context";
 import { postData } from "@/services/http-config";
 import { useState } from "react";
 import { BuyStocks } from "./BuyStock";
+import { useNavigate } from "react-router-dom";
 
 export function StocksListing() {
   const [isAddStock, setIsAddStock] = useState(false);
   const [selectedStock, setSelectedStock] = useState({});
+  const navigate = useNavigate();
   let { stocks } = useStock();
   function onBuyStock(stock) {
     if (stock) {

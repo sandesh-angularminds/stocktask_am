@@ -18,6 +18,7 @@ export const Holdings = () => {
   const [loading, setLoading] = useState(false);
   async function deleteHolding(id) {
     try {
+      
       let res = await delData("/holdings/" + id);
       getHoldingsDetails();
       console.log("del hol", res);
