@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth.context";
 import { useEffect, useState } from "react";
@@ -86,13 +86,17 @@ export function Layout({ children }) {
               })}
             {user &&
               [...routes].map((route) => (
-                <Link
+                <NavLink
                   key={route.path}
                   to={route.path}
-                  className="text-sm text-muted-foreground hover:text-primary transition"
+                  className={({ isActive }) =>
+                    `text-sm text-muted-foreground hover:text-primary transition ${
+                      isActive ? "text-primary" : ""
+                    }`
+                  }
                 >
                   {route.label}
-                </Link>
+                </NavLink>
               ))}
             {user && (
               <div className="flex justify-between items-center gap-1.5">
