@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useStock } from "@/contexts/stock.context";
-import { postData } from "@/services/http-config";
+import { getData, postData } from "@/services/http-config";
 import { useState } from "react";
 import { BuyStocks } from "./BuyStock";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +29,17 @@ export function StocksListing() {
   async function addToWatchlist(stock) {
     console.log("stock", stock);
     try {
-      const watchlist = await postData("/watchlist", { symbol: stock.symbol });
+      const watchlistData = await getData("/watchlist");
+      const found = watchlistData.data.find((item) => item.stockId == stock.id);
+      console.log("found==>", found);
+      if (found) {
+        navigate("/watchlist");
+        return;
+      }
+      const watchlist = await postData("/watchlist", {
+        symbol: stock.symbol,
+        stockId: stock.id,
+      });
       navigate("/watchlist");
     } catch (err) {
       alert("Something wrong");

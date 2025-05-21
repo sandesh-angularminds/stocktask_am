@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { HoldingsPieChart } from "./holdings/HoldingPieChart";
 import { getData } from "@/services/http-config";
+import { useAuth } from "@/contexts/auth.context";
 
 export const Dashboard = () => {
+  const { setNewTotalBalance } = useAuth();
   let [holdingsData, setHoldingsData] = useState();
   let [loading, setLoading] = useState(false);
   async function getHoldingsDetails() {
     setLoading(true);
     try {
-
       holdingsData = await getData("/holdings");
       setHoldingsData(holdingsData.data);
       setLoading(false);
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
   useEffect(() => {
     getHoldingsDetails();
+    setNewTotalBalance();
   }, []);
   return (
     <div>

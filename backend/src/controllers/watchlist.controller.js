@@ -4,9 +4,11 @@ const Watchlist = db.Watchlist;
 
 exports.creatWatchlist = catchAsync(async (req, res) => {
   const userId = req.userId;
+  console.log("stock id", req.stockId);
   const newWatchlist = await Watchlist.create({
     ...req.body,
     userId: String(userId),
+    stockId: req.body.stockId,
   });
   res.status(200).json(newWatchlist);
 });

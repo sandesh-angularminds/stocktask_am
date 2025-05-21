@@ -83,7 +83,7 @@ export const Watchlist = () => {
         </TableFooter> */}
       </Table>
       <BuyStocks
-        stock={selectedStock}
+        stock={{ ...selectedStock, id: selectedStock.stockId }}
         open={isBuyStock}
         onOpenChange={setIsBuyStock}
       />

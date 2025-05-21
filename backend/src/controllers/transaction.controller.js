@@ -6,7 +6,9 @@ const Bank = db.Bank;
 
 const createBankAccount = catchAsync(async (req, res) => {
   const { userId } = req;
+  console.log("userid", userId);
   const { name, ifsc, amount = 0 } = req.body;
+  console.log(name, ifsc, amount);
   const bank = await Bank.create({
     name,
     ifsc,

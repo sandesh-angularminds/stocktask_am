@@ -9,17 +9,24 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/contexts/auth.context";
 import { postData } from "@/services/http-config";
 
 import { Label } from "@radix-ui/react-label";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export const Bank = ({ open, onOpenChange }) => {
   const { register, data, handleSubmit, setValue, getValues } = useForm();
+  const { setNewTotalBalance } = useAuth();
+  const navigate = useNavigate();
   async function onAddBank(data) {
     console.log(data);
     const createdBank = await postData("/bank/create", data);
+    setNewTotalBalance();
+    onOpenChange(false);
+    navigate("/dashboard");
   }
   function onSet(amt) {
     amt += getValues("amount") || 0;

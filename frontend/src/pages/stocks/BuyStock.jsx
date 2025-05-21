@@ -18,6 +18,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 export function BuyStocks({ stock, open, onOpenChange }) {
+  console.log("stock details==>", stock);
   const { stocks = [] } = useStock();
   const { user, setNewTotalBalance } = useAuth();
   const [totalAmt, setTotalAmt] = useState(0);
@@ -35,10 +36,11 @@ export function BuyStocks({ stock, open, onOpenChange }) {
   });
   useEffect(() => {
     let currStock = stocks.filter((item) => {
-      if (item.id === stock.id) {
+      if (item.id == stock.id) {
         return item;
       }
     });
+    console.log("currstock", currStock);
     setValue("symbol", stock.symbol);
     setValue("stockId", stock.id);
     setValue("currentPrice", currStock[0]?.currentPrice || 0);

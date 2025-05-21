@@ -22,20 +22,28 @@ import { Label } from "@/components/ui/label";
 import { getData, postData } from "@/services/http-config";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useAuth } from "@/contexts/auth.context";
 
 export function AddMoney({ open, onOpenChange }) {
+  const { setNewTotalBalance } = useAuth();
+  const [bankError, setBankError] = useState();
   const {
     register,
     handleSubmit,
     setValue,
     getValues,
     control,
+    setError,
     formState: { errors },
   } = useForm();
   const [banks, setBanks] = useState();
   async function fetchBanks() {
     //fetch all banks;
     const bankData = await getData("/bank");
+    console.log("bankdata", bankData);
+    if (bankData.data.result.length == 0) {
+      setBankError("Please add bank first");
+    }
     setBanks(bankData.data.result);
   }
   useEffect(() => {
@@ -55,7 +63,7 @@ export function AddMoney({ open, onOpenChange }) {
       };
 
       const newTransaction = await postData("/bank/deposit", payload);
-
+      setNewTotalBalance();
       onOpenChange(false);
     } catch (error) {}
     // onOpenChange(false);
@@ -93,7 +101,7 @@ export function AddMoney({ open, onOpenChange }) {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Stocks</SelectLabel>
-                        {banks.map((bank, index) => {
+                        {banks?.map((bank, index) => {
                           return (
                             <SelectItem key={index} value={bank.name}>
                               {bank.name}
@@ -107,6 +115,9 @@ export function AddMoney({ open, onOpenChange }) {
               />
               {errors.name && (
                 <p className="text-red-500 text-sm">{errors.name.message}</p>
+              )}
+              {bankError && (
+                <p className="text-red-500 text-sm">Please add bank first</p>
               )}
             </div>
 
