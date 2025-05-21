@@ -33,7 +33,6 @@ export function AddMoney({ open, onOpenChange }) {
     setValue,
     getValues,
     control,
-    setError,
     formState: { errors },
   } = useForm();
   const [banks, setBanks] = useState();
@@ -62,10 +61,13 @@ export function AddMoney({ open, onOpenChange }) {
         bankId,
       };
 
-      const newTransaction = await postData("/bank/deposit", payload);
+      await postData("/bank/deposit", payload);
       setNewTotalBalance();
       onOpenChange(false);
-    } catch (error) {}
+    } catch (error) {
+      console.log("error", error);
+    }
+
     // onOpenChange(false);
   }
   function onSet(amount) {

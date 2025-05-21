@@ -14,9 +14,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/auth.context";
-import { getData } from "@/services/http-config";
 import { LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 export function ProfileDropdown({
   open,
@@ -26,8 +26,7 @@ export function ProfileDropdown({
   setIsAddBankModal,
 }) {
   const [money, setMoney] = useState(0);
-  const [position, setPosition] = useState("bottom");
-  const { logout, user, setNewTotalBalance } = useAuth();
+  const { logout, user } = useAuth();
   function onLogout() {
     let response = confirm("Are you sure you want to logout?");
     if (response) logout();
@@ -84,6 +83,12 @@ export function ProfileDropdown({
             </Button>
           </DropdownMenuShortcut>
         </DropdownMenuItem>
+
+        {/* transactions */}
+        <DropdownMenuItem>
+          <NavLink to={"/transactions"}> Transactions </NavLink>
+        </DropdownMenuItem>
+
         <DropdownMenuSeparator />
 
         <DropdownMenuItem>

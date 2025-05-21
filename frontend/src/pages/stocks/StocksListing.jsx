@@ -36,7 +36,7 @@ export function StocksListing() {
         navigate("/watchlist");
         return;
       }
-      const watchlist = await postData("/watchlist", {
+      await postData("/watchlist", {
         symbol: stock.symbol,
         stockId: stock.id,
       });
@@ -54,8 +54,8 @@ export function StocksListing() {
           <TableRow>
             <TableHead className="">Stock Name</TableHead>
             <TableHead>Id</TableHead>
-            <TableHead>Current Price</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead className={"w-62"}>Current Price</TableHead>
+            <TableHead className={"text-right"}>Actions</TableHead>
             {/* <TableHead className="text-right">Amount</TableHead> */}
           </TableRow>
         </TableHeader>
@@ -64,8 +64,8 @@ export function StocksListing() {
             <TableRow key={stock.id}>
               <TableCell className="font-medium">{stock.symbol}</TableCell>
               <TableCell>{stock.id}</TableCell>
-              <TableCell>{stock.currentPrice}</TableCell>
-              <TableCell className="">
+              <TableCell className={"w-62"}>{stock.currentPrice}</TableCell>
+              <TableCell className={"text-right"}>
                 <Button
                   variant={"outline"}
                   className={"bg-green-700 me-3 hover:bg-green-500"}

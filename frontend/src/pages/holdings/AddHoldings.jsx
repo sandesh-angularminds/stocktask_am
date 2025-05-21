@@ -37,10 +37,10 @@ export function Addholding() {
   ];
   const onSubmit = async (data) => {
     try {
-      const holdingsData = await postData("/holdings", data);
+      await postData("/holdings", data);
       navigate("/holdings");
     } catch (err) {
-      alert("Something wrong");
+      alert("Something wrong",err);
     }
   };
   return (

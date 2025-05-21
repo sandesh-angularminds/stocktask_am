@@ -8,8 +8,7 @@ import { ProfileDropdown } from "../profile/ProfileDropdown";
 import { Bank } from "../bank/Bank";
 
 export function Layout({ children }) {
-  const { logout, user, setUser, setNewTotalBalance } = useAuth();
-  const [userData, setUserData] = useState();
+  const { user, setUser, setNewTotalBalance } = useAuth();
 
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -56,9 +55,6 @@ export function Layout({ children }) {
       path: "/auth/register",
     },
   ];
-  useEffect(() => {
-    setUserData(user);
-  }, [user]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">

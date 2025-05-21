@@ -17,7 +17,6 @@ export function Login() {
   const { login } = useAuth();
   const onSubmit = async (data) => {
     try {
-      console.log("data", data);
       const userData = await postData("/user/login", data);
       if (userData) {
         login(userData.data);
@@ -30,7 +29,7 @@ export function Login() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center bg-gray-100">
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-center text-2xl">Login</CardTitle>
@@ -56,7 +55,7 @@ export function Login() {
                 {...register("password", { required: "Password is required" })}
               />
               {errors.password && (
-                <p className="text-red-500 text-sm">
+                <p className="text-red-500 h-3 text-sm">
                   {errors.password.message}
                 </p>
               )}

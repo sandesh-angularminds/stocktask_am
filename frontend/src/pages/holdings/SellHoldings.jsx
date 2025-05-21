@@ -19,19 +19,11 @@ import { useNavigate } from "react-router-dom";
 
 export function SellHoldings({ stock, open, onOpenChange }) {
   const { stocks = [] } = useStock();
-  const { user, setNewTotalBalance } = useAuth();
+  const { setNewTotalBalance } = useAuth();
   const maxQuantity = stock?.quantity;
   const [totalAmt, setTotalAmt] = useState(0);
   const navigate = useNavigate();
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    reset,
-    setValue,
-    getValues,
-    control,
-  } = useForm({
+  const { register, handleSubmit, setValue, getValues, control } = useForm({
     defaultValues: {},
   });
   useEffect(() => {
@@ -50,8 +42,7 @@ export function SellHoldings({ stock, open, onOpenChange }) {
 
   async function onSellQuantity(data) {
     try {
-      let averageBuyPrice = data.currentPrice;
-      const holdingsData = await putData(`/holdings/${stock.stockId}`, {
+      await putData(`/holdings/${stock.stockId}`, {
         ...data,
         quantity: data.quantity,
         currentPrice: data.currentPrice,
@@ -104,6 +95,7 @@ export function SellHoldings({ stock, open, onOpenChange }) {
                 render={({ field }) => (
                   <input
                     {...field}
+                    type="number"
                     className="w-full py-1 px-3"
                     onChange={(e) => {
                       field.onChange(e); // important to call this to update form state

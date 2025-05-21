@@ -15,6 +15,12 @@ const createBankAccount = catchAsync(async (req, res) => {
     totalBalance: amount,
     userId,
   });
+  await Transactionlog.create({
+    action: "deposit",
+    bankId: bank.id,
+    userId: userId,
+    amount: amount,
+  });
   return res
     .status(200)
     .json({ status: "success", message: "New Bank created successfully!!!" });
@@ -59,7 +65,7 @@ const depositAmount = catchAsync(async (req, res) => {
     { where: { userId: String(userId) } }
   );
 
-  const newTransaction = await Transactionlog.create({
+   await Transactionlog.create({
     action: "deposit",
     bankId: bankInfo.id,
     userId: userId,
@@ -104,9 +110,19 @@ const withdrawAmount = catchAsync(async (req, res) => {
   return res.status(200).json({ status: "succes", result: newBankAction });
 });
 
+const getAllTransactions = catchAsync(async (req, res) => {
+  const transactions = await Transactionlog.findAll({
+    where: { userId: String(req.userId) },
+    order: [["createdAt", "DESC"]],
+  });
+  console.log("trasactions logs", transactions);
+  return res.status(200).json({ status: "success", result: transactions });
+});
+
 module.exports = {
   createBankAccount,
   depositAmount,
   withdrawAmount,
   getAllBanks,
+  getAllTransactions,
 };

@@ -44,7 +44,7 @@ export function Register() {
     console.log("form", form);
   }, [form]);
   return (
-    <div className="flex items-center justify-center min-h-screen bg-muted">
+    <div className="flex items-center justify-center  bg-muted">
       <Card className="w-full max-w-md p-6">
         <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
         <Form {...form}>

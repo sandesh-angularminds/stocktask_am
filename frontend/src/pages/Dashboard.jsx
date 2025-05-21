@@ -13,7 +13,9 @@ export const Dashboard = () => {
       holdingsData = await getData("/holdings");
       setHoldingsData(holdingsData.data);
       setLoading(false);
-    } catch (error) {}
+    } catch (error) {
+      console.log("error", error);
+    }
   }
   useEffect(() => {
     getHoldingsDetails();

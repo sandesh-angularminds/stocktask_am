@@ -12,11 +12,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getData, postData, putData } from "@/services/http-config";
+import { getData, putData } from "@/services/http-config";
 import { Controller, useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { symbol } from "zod";
 
 export function EditHolding() {
   const navigate = useNavigate();
@@ -67,7 +66,7 @@ export function EditHolding() {
   const onSubmit = async (data) => {
     console.log("data", data);
     try {
-      const holdingsData = await putData("/holdings/" + id, data);
+      await putData("/holdings/" + id, data);
       navigate("/holdings");
     } catch (err) {
       alert("Something wrong");

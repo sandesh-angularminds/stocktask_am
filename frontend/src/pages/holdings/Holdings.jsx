@@ -9,18 +9,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
-import { getData, delData } from "@/services/http-config";
+import { Link } from "react-router-dom";
+import { getData } from "@/services/http-config";
 import { SellHoldings } from "./SellHoldings";
 import { useStock } from "@/contexts/stock.context";
 
 export const Holdings = () => {
-  const navigate = useNavigate();
   const { stocks } = useStock();
   let [holdingsData, setHoldingsData] = useState([]);
   const [selectedStock, setSelectedStock] = useState({});
   const [isSellStock, setIsSellStock] = useState(false);
-  const [loading, setLoading] = useState(false);
   async function onSellStocks(stock) {
     setSelectedStock(stock);
     setIsSellStock(true);
@@ -73,12 +71,12 @@ export const Holdings = () => {
             <TableHead className="w-[100px]">Id</TableHead>
             {/* <TableHead>User id</TableHead> */}
             <TableHead>Symbol</TableHead>
-            <TableHead className="text-right">Quantity</TableHead>
-            <TableHead className="text-right">Average Price</TableHead>
-            <TableHead className="text-right">Current Price</TableHead>
-            <TableHead className="text-right">Total value</TableHead>
-            <TableHead className="text-right">P&L</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead className="text-right w-[180px]">Quantity</TableHead>
+            <TableHead className="text-right w-[180px]">Average Price</TableHead>
+            <TableHead className="text-right w-[180px]">Current Price</TableHead>
+            <TableHead className="text-right w-[180px]">Total value</TableHead>
+            <TableHead className="text-right w-[180px]">P&L</TableHead>
+            <TableHead className="text-right w-[180px]">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

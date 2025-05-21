@@ -18,12 +18,12 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 export const Bank = ({ open, onOpenChange }) => {
-  const { register, data, handleSubmit, setValue, getValues } = useForm();
+  const { register, handleSubmit, setValue, getValues } = useForm();
   const { setNewTotalBalance } = useAuth();
   const navigate = useNavigate();
   async function onAddBank(data) {
     console.log(data);
-    const createdBank = await postData("/bank/create", data);
+    await postData("/bank/create", data);
     setNewTotalBalance();
     onOpenChange(false);
     navigate("/dashboard");

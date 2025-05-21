@@ -1,7 +1,5 @@
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ItemCard } from "./components/ItemCard";
 import { delData, getData } from "@/services/http-config";
 import {
   Table,
@@ -16,7 +14,6 @@ import {
 import { BuyStocks } from "../stocks/BuyStock";
 
 export const Watchlist = () => {
-  const navigate = useNavigate();
   const [watchlistData, setWatchlistData] = useState();
   const [selectedStock, setSelectedStock] = useState({});
   const [isBuyStock, setIsBuyStock] = useState();
@@ -45,7 +42,7 @@ export const Watchlist = () => {
             <TableHead>Id</TableHead>
             <TableHead>User Id</TableHead>
             <TableHead>Name</TableHead>
-            <TableHead>Action</TableHead>
+            <TableHead className={"text-right"}>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -57,7 +54,7 @@ export const Watchlist = () => {
                   {watchlist.userId}
                 </TableCell>
                 <TableCell>{watchlist.symbol}</TableCell>
-                <TableCell>
+                <TableCell className={"text-right"}>
                   <Button
                     variant={"outline"}
                     className={"text-green-700 hover:text-green-400 me-3"}

@@ -8,5 +8,6 @@ router.get("/", transactionController.getAllBanks);
 router.post("/create", transactionController.createBankAccount);
 router.post("/deposit", transactionController.depositAmount);
 router.post("/withdraw", transactionController.withdrawAmount);
+router.get("/transactions", transactionController.getAllTransactions);
 
 module.exports = router;

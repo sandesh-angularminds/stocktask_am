@@ -23,15 +23,7 @@ export function BuyStocks({ stock, open, onOpenChange }) {
   const { user, setNewTotalBalance } = useAuth();
   const [totalAmt, setTotalAmt] = useState(0);
   const navigate = useNavigate();
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    reset,
-    setValue,
-    getValues,
-    control,
-  } = useForm({
+  const { register, handleSubmit, setValue, getValues, control } = useForm({
     defaultValues: {},
   });
   useEffect(() => {
@@ -50,7 +42,7 @@ export function BuyStocks({ stock, open, onOpenChange }) {
   async function onBuyStock(data) {
     try {
       let averageBuyPrice = data.currentPrice;
-      const holdingsData = await postData("/holdings", {
+      await postData("/holdings", {
         ...data,
         averageBuyPrice,
       });
@@ -108,6 +100,7 @@ export function BuyStocks({ stock, open, onOpenChange }) {
                 defaultValue="0"
                 render={({ field }) => (
                   <input
+                    type={"number"}
                     {...field}
                     className="w-full py-1 px-3"
                     onChange={(e) => {
@@ -139,7 +132,7 @@ export function BuyStocks({ stock, open, onOpenChange }) {
                 Total amount:- <span>{totalAmt} </span>
               </p>
               {totalAmt > user?.totalBalance && (
-                <p className="text-red-600">
+                <p className="text-red-600 h-5">
                   {" "}
                   Total amount is less than needed
                 </p>
