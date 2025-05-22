@@ -7,7 +7,7 @@ const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
   logging: false,
   dialectOptions: {
     ssl: {
-      require: true,
+      require: false,
       rejectUnauthorized: false, // Accept self-signed certs
     },
   },
