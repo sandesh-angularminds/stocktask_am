@@ -6,9 +6,7 @@ const Bank = db.Bank;
 
 const createBankAccount = catchAsync(async (req, res) => {
   const { userId } = req;
-  console.log("userid", userId);
   const { name, ifsc, amount = 0 } = req.body;
-  console.log(name, ifsc, amount);
   const bank = await Bank.create({
     name,
     ifsc,
@@ -56,7 +54,6 @@ const depositAmount = catchAsync(async (req, res) => {
   if (!bankInfo) {
     throw new ApiError(404, "Bank account not found!!!");
   }
-  console.log("currbal", bankInfo.totalBalance, "amt", amount);
   const currBalance = parseInt(+bankInfo.totalBalance + +amount);
   const newBankAction = await Bank.update(
     {
@@ -115,7 +112,6 @@ const getAllTransactions = catchAsync(async (req, res) => {
     where: { userId: String(req.userId) },
     order: [["createdAt", "DESC"]],
   });
-  console.log("trasactions logs", transactions);
   return res.status(200).json({ status: "success", result: transactions });
 });
 
