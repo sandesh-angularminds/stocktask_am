@@ -39,8 +39,7 @@ exports.getAllHoldings = catchAsync(async (req, res) => {
 
 exports.updateHoldings = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const currHolding = await Holdings.findOne({ where: { stockId: id } });
-
+  const currHolding = await Holdings.findOne({ where: { id: id } });
   if (currHolding.quantity == req.body.quantity) {
     currHolding.destroy();
     res.status(200).json({ status: "success" });
@@ -49,7 +48,7 @@ exports.updateHoldings = catchAsync(async (req, res) => {
   const [updated] = await Holdings.update(
     { ...req.body, quantity: +currHolding.quantity - +req.body.quantity },
     {
-      where: { stockId: id },
+      where: { id: id },
     }
   );
 

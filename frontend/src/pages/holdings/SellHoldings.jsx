@@ -42,7 +42,7 @@ export function SellHoldings({ stock, open, onOpenChange }) {
 
   async function onSellQuantity(data) {
     try {
-      await putData(`/holdings/${stock.stockId}`, {
+      await putData(`/holdings/${stock.id}`, {
         ...data,
         quantity: data.quantity,
         currentPrice: data.currentPrice,

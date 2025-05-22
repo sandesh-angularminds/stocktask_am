@@ -1,16 +1,14 @@
 import axiosInstance from "./interceptor";
 
-export async function fetchData(
-  endpoint,
-  method = "GET",
-  body
-) {
-
+export async function fetchData(endpoint, method = "GET", body) {
+  if (!endpoint) {
+    return;
+  }
   const options = {
     method: method,
     data: {},
   };
-  
+
   if (body) {
     options.data = body;
   }
@@ -32,7 +30,7 @@ export function putData(endpoint, body) {
   return fetchData(endpoint, "PUT", body);
 }
 
-export function delData(endpoint, body=null) {
+export function delData(endpoint, body = null) {
   return fetchData(endpoint, "DELETE", body);
 }
 
