@@ -17,11 +17,14 @@ export function Layout({ children }) {
   useEffect(() => {
     async function getUserData() {
       const data = await getData("/user/self");
-      if (data) {
+      console.log("data", data);
+      if (Object.keys(data).length) {
         navigate("/dashboard");
+        setUser(data.data.user);
+        setNewTotalBalance();
+      } else {
+        navigate("/auth/login");
       }
-      setUser(data.data.user);
-      setNewTotalBalance();
     }
     getUserData();
   }, []);

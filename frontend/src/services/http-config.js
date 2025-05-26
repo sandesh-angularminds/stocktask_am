@@ -1,5 +1,5 @@
 import axiosInstance from "./interceptor";
-
+  
 export async function fetchData(endpoint, method = "GET", body) {
   if (!endpoint) {
     return {};

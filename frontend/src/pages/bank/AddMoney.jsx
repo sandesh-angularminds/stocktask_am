@@ -39,14 +39,20 @@ export function AddMoney({ open, onOpenChange }) {
   const [banks, setBanks] = useState();
   async function fetchBanks() {
     //fetch all banks;
-    const bankData = await getData("/bank");
-    console.log("bankdata", bankData);
-    if (bankData.data.result.length == 0) {
-      setBankError("Please add bank first");
-    } else {
-      setBankError("");
+    try {
+      const bankData = await getData("/bank");
+      console.log("bankdata", bankData);
+      let bankList = bankData.data.result || [];
+      if (bankList.length == 0) {
+        setBankError("Please add bank first");
+      } else {
+        setBankError("");
+        setBanks(bankList);
+      }
+    } catch (error) {
+      console.error("Failed to fetch banks...", error);
+      setBankError("Unable to fetch banks");
     }
-    setBanks(bankData.data.result);
   }
   useEffect(() => {
     fetchBanks();
