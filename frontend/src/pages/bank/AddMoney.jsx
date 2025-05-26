@@ -27,6 +27,7 @@ import { useAuth } from "@/contexts/auth.context";
 export function AddMoney({ open, onOpenChange }) {
   const { setNewTotalBalance } = useAuth();
   const [bankError, setBankError] = useState();
+  const { user } = useAuth();
   const {
     register,
     handleSubmit,
@@ -42,6 +43,8 @@ export function AddMoney({ open, onOpenChange }) {
     console.log("bankdata", bankData);
     if (bankData.data.result.length == 0) {
       setBankError("Please add bank first");
+    } else {
+      setBankError("");
     }
     setBanks(bankData.data.result);
   }
@@ -54,11 +57,12 @@ export function AddMoney({ open, onOpenChange }) {
       const bankId = banks.filter((item) => {
         return item.name == data.name;
       })[0]?.id;
-
+      console.log("on add money", user);
       const payload = {
         ...data,
         action: "deposit",
         bankId,
+        accountNo: user.accountNo,
       };
 
       await postData("/bank/deposit", payload);

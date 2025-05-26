@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { msg: "Userid cannot be empty" },
       },
     },
+    accountNo: {
+      type: DataTypes.STRING,
+    },
     amount: {
       type: DataTypes.FLOAT,
       allowNum: false,

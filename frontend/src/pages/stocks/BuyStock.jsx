@@ -50,6 +50,7 @@ export function BuyStocks({ stock, open, onOpenChange }) {
       await postData("/bank/withdraw", {
         amount: totalAmt,
         action: "withdraw",
+        accountNo: user.accountNo,
       });
       setNewTotalBalance();
       navigate("/holdings");

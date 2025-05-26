@@ -5,7 +5,7 @@ Button{
   cursor: pointer;
 }
 Label{
-  margin-bottom: 3px;
+  margin-bottom: 5px;
 }
 
 @custom-variant dark (&:is(.dark *));

@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     ifsc: {
       type: DataTypes.STRING,
     },
+    accountNo: {
+      type: DataTypes.STRING,
+    },
     totalBalance: {
       type: DataTypes.INTEGER,
       default: 0,

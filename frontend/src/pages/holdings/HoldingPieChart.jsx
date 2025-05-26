@@ -10,7 +10,7 @@ export function HoldingsPieChart({ holdings }) {
     labels: holdings.map((item) => item.symbol),
     datasets: [
       {
-        data: holdings.map((item) => item.currentPrice), // ✅ Fixed here
+        data: holdings.map((item) => item.averageBuyPrice * item.quantity), // ✅ Fixed here
         backgroundColor: [
           "#FF6384",
           "#36A2EB",
@@ -38,6 +38,7 @@ export function HoldingsPieChart({ holdings }) {
               `Symbol: ${info.symbol}`,
               `Quantity: ${info.quantity}`,
               `Buy Price: ${info.averageBuyPrice}`,
+              `Total Value: ${Number(info.averageBuyPrice * info.quantity).toFixed(2)}`,
             ];
           },
         },

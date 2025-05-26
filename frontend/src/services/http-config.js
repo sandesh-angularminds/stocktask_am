@@ -2,20 +2,28 @@ import axiosInstance from "./interceptor";
 
 export async function fetchData(endpoint, method = "GET", body) {
   if (!endpoint) {
-    return;
+    return {};
   }
-  const options = {
-    method: method,
-    data: {},
-  };
+  try {
+    const options = {
+      method: method,
+      data: {},
+    };
 
-  if (body) {
-    options.data = body;
+    if (body) {
+      options.data = body;
+    }
+    const response = await axiosInstance(endpoint, options);
+    const data = response;
+
+    return data;
+  } catch (error) {
+    console.log("error.status", error.status);
+    if (error.status == 404) {
+      console.log("error in http-confing", error);
+    }
+    return {};
   }
-  const response = await axiosInstance(endpoint, options);
-  const data = response;
-
-  return data;
 }
 
 export function getData(endpoint) {

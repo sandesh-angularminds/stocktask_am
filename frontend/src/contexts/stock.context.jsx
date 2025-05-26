@@ -1,8 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 const StockContext = createContext();
+
 export const StockProvider = ({ children }) => {
-  let stocksData = [
+  let initialStocks = [
     { id: 1, symbol: "AAPL", currentPrice: 189.12 },
     { id: 2, symbol: "GOOGL", currentPrice: 2763.45 },
     { id: 3, symbol: "AMZN", currentPrice: 3456.78 },
@@ -24,29 +25,30 @@ export const StockProvider = ({ children }) => {
     { id: 19, symbol: "V", currentPrice: 271.33 },
     { id: 20, symbol: "MA", currentPrice: 412.56 },
   ];
-
   const [stocks, setStock] = useState([]);
+
   function getRandomVal(min = 10, max = 100) {
     return (Math.random() * (max - min) + min).toFixed(2);
   }
-  let stocksD;
+
   function setStockData() {
-    let interValId;
-    if (interValId) {
-      clearInterval(interValId);
+    let intervalId;
+    if (intervalId) {
+      clearInterval(intervalId);
     }
-    interValId = setInterval(() => {
-      stocksD = stocksData.map((item) => {
+    intervalId = setInterval(() => {
+      let updateStocks = initialStocks.map((item) => {
         return { ...item, currentPrice: getRandomVal() };
       });
-      setStock(stocksD);
+      setStock(updateStocks);
     }, 3000);
   }
+
   useEffect(() => {
-    setStock(stocksData);
+    setStock(initialStocks);
     setStockData();
   }, []);
-  // setStock(stocksD);
+
   return (
     <StockContext.Provider value={{ stocks }}>{children}</StockContext.Provider>
   );

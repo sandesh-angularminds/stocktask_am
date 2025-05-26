@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -54,6 +53,10 @@ export const Bank = ({ open, onOpenChange }) => {
               <div>
                 <Label htmlFor="bankName">IFSC code</Label>
                 <Input type={"text"} {...register("ifsc")} />
+              </div>
+              <div>
+                <Label htmlFor="accountNo">Account Number</Label>
+                <Input type={"text"} {...register("accountNo")} />
               </div>
               <div className="grid items-center gap-4">
                 <div className="flex-col">

@@ -6,16 +6,20 @@ const Bank = db.Bank;
 
 const createBankAccount = catchAsync(async (req, res) => {
   const { userId } = req;
-  const { name, ifsc, amount = 0 } = req.body;
+  console.log("userid", userId);
+  const { name, ifsc, amount = 0, accountNo } = req.body;
+  console.log(name, ifsc, amount);
   const bank = await Bank.create({
     name,
     ifsc,
     totalBalance: amount,
+    accountNo,
     userId,
   });
   await Transactionlog.create({
     action: "deposit",
     bankId: bank.id,
+    accountNo: bank.accountNo,
     userId: userId,
     amount: amount,
   });
@@ -31,6 +35,7 @@ const getAllBanks = catchAsync(async (req, res) => {
   const totalBalance = banks.reduce((acc, data) => {
     return acc + data.totalBalance;
   }, 0);
+  
   res.status(200).json({ status: "success", result: banks, totalBalance });
 });
 
@@ -41,6 +46,7 @@ const depositAmount = catchAsync(async (req, res) => {
     name = "HDFC bank",
     bankId = "1",
     amount,
+    accountNo,
   } = req.body;
 
   if (action !== "deposit" || !amount) {
@@ -49,6 +55,7 @@ const depositAmount = catchAsync(async (req, res) => {
   const bankInfo = await Bank.findOne({
     where: {
       userId: String(userId),
+      accountNo: accountNo,
     },
   });
   if (!bankInfo) {
@@ -59,12 +66,13 @@ const depositAmount = catchAsync(async (req, res) => {
     {
       totalBalance: currBalance,
     },
-    { where: { userId: String(userId) } }
+    { where: { userId: String(userId), accountNo: accountNo } }
   );
 
-   await Transactionlog.create({
+  await Transactionlog.create({
     action: "deposit",
     bankId: bankInfo.id,
+    accountNo: accountNo,
     userId: userId,
     amount: amount,
   });
@@ -73,13 +81,17 @@ const depositAmount = catchAsync(async (req, res) => {
 
 const withdrawAmount = catchAsync(async (req, res) => {
   const userId = req.userId;
-  const { action, amount } = req.body;
-  if (action !== "withdraw" && !amount) {
-    throw new ApiError(404, `Withdraw action and amount is required!!!`);
+  const { action, amount, accountNo } = req.body;
+  if (action !== "withdraw" && !amount && !accountNo) {
+    throw new ApiError(
+      404,
+      `Withdraw action, amount and accountNo  is required!!!`
+    );
   }
   const bankInfo = await Bank.findOne({
     where: {
       userId: String(userId),
+      accountNo: accountNo,
     },
   });
   if (!bankInfo) {
@@ -95,13 +107,14 @@ const withdrawAmount = catchAsync(async (req, res) => {
       userId,
       totalBalance: currBalance,
     },
-    { where: { userId: String(userId) } }
+    { where: { userId: String(userId), accountNo: accountNo } }
   );
 
   const newTransaction = await Transactionlog.create({
     action: "withdraw",
     bankId: bankInfo.id,
     userId: userId,
+    accountNo,
     amount: amount,
   });
   return res.status(200).json({ status: "succes", result: newBankAction });

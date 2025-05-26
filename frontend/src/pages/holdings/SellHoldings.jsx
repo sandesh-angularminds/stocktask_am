@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 
 export function SellHoldings({ stock, open, onOpenChange }) {
   const { stocks = [] } = useStock();
-  const { setNewTotalBalance } = useAuth();
+  const { user, setNewTotalBalance } = useAuth();
   const maxQuantity = stock?.quantity;
   const [totalAmt, setTotalAmt] = useState(0);
   const navigate = useNavigate();
@@ -51,6 +51,7 @@ export function SellHoldings({ stock, open, onOpenChange }) {
       await postData("/bank/deposit", {
         amount: totalAmt,
         action: "deposit",
+        accountNo: user.accountNo,
       });
       onOpenChange(false);
       navigate("/holdings");
