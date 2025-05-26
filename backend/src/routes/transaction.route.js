@@ -5,6 +5,8 @@ const router = express.Router();
 
 router.use(verifyAuth);
 router.get("/", transactionController.getAllBanks);
+router.get("/default", transactionController.getDefaultBankDetails);
+router.post('/default/:accountNo', transactionController.setDefaultBank)
 router.post("/create", transactionController.createBankAccount);
 router.post("/deposit", transactionController.depositAmount);
 router.post("/withdraw", transactionController.withdrawAmount);

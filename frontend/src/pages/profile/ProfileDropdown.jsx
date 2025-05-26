@@ -94,16 +94,6 @@ export function ProfileDropdown({
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
-
-        <DropdownMenuItem>
-          Profile
-          <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          Profile
-          <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => onLogout()}>
           Logout
           <DropdownMenuShortcut>

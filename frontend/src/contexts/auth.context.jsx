@@ -17,12 +17,12 @@ export const AuthProvider = ({ children }) => {
       clearTimeout(timeoutId);
     }
     timeoutId = setTimeout(async () => {
-      const bankData = await getData("/bank");
+      const bankData = await getData("/bank/default");
       setUser((prev) => {
         return {
           ...prev,
-          totalBalance: bankData.data.totalBalance,
-          accountNo: bankData.data?.result[0]?.accountNo,
+          totalBalance: bankData.data?.result?.totalBalance || 0,
+          accountNo: bankData.data?.result?.accountNo,
         };
       });
     }, 500);

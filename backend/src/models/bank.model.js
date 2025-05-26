@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { msg: "Userid cannot be empty" },
       },
     },
+    isDefault: {
+      type: DataTypes.BOOLEAN,
+      default: false,
+    },
     ifsc: {
       type: DataTypes.STRING,
     },

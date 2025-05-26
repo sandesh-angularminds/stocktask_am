@@ -33,6 +33,7 @@ export const Transactions = () => {
               <TableRow>
                 <TableHead className="text-right">Id</TableHead>
                 <TableHead className={"text-right"}>Action</TableHead>
+                <TableHead className={"text-right"}> Account Number </TableHead>
                 <TableHead className={"text-right"}> Amount</TableHead>
                 <TableHead className="text-right">Created At</TableHead>
               </TableRow>
@@ -46,6 +47,9 @@ export const Transactions = () => {
                     </TableCell>
                     <TableCell className="font-medium text-right">
                       {String(transaction?.action).toUpperCase()}
+                    </TableCell>
+                    <TableCell className={"text-right"}>
+                      {transaction.accountNo}
                     </TableCell>
                     <TableCell
                       className={`text-right font-bold ${
