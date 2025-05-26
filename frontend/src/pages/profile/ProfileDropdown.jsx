@@ -69,7 +69,11 @@ export function ProfileDropdown({
         {/* add bank account */}
         <DropdownMenuItem>
           <p>
-            <span>Bank</span> <br />{" "}
+            <NavLink to="/banklisting">
+              {" "}
+              <span>Bank</span>
+            </NavLink>{" "}
+            <br />{" "}
           </p>
           <DropdownMenuShortcut>
             <Button

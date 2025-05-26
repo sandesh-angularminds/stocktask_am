@@ -15,6 +15,7 @@ import { Watchlist } from "./pages/watchlist/Watchlist";
 import { StockProvider } from "./contexts/stock.context";
 import { StocksListing } from "./pages/stocks/StocksListing";
 import { Transactions } from "./pages/bank/Transactions";
+import { BankListing } from "./pages/bank/BankListing";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/stocks" element={<StocksListing />} />
               <Route path="/transactions" element={<Transactions />} />
+              <Route path="/banklisting" element={<BankListing />} />
               <Route path="/holdings" element={<HoldingsLayout />}>
                 <Route index element={<Holdings />} />
                 <Route path="add" element={<Addholding />} />{" "}
@@ -36,7 +38,6 @@ function App() {
                 <Route path="add" element={<AddWatchlist />} />
               </Route>
               <Route path="/auth/register" element={<Register />} />
-
               <Route path="/auth/login" element={<Login />} />
               <Route path="/" element={<Navigate to="/auth/register" />} />
               <Route path="*" element={<Notfound />} />

@@ -11,10 +11,13 @@ export const AuthProvider = ({ children }) => {
 
   const navigate = useNavigate();
   //set user totalBalance
+  let timeoutId;
   const setNewTotalBalance = async () => {
-    setTimeout(async () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(async () => {
       const bankData = await getData("/bank");
-      console.log("bankdata", bankData);
       setUser((prev) => {
         return {
           ...prev,
@@ -22,7 +25,7 @@ export const AuthProvider = ({ children }) => {
           accountNo: bankData.data?.result[0]?.accountNo,
         };
       });
-    }, 2000);
+    }, 500);
   };
 
   const login = (userData) => {
