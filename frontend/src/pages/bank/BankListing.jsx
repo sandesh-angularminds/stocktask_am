@@ -4,14 +4,18 @@ import { TableCell } from "@/components/ui/table";
 import { SharedTable } from "../components/shared/SharedTable";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth.context";
+import { Loader } from "../components/shared/Loader";
 
 export const BankListing = () => {
   const [banks, setBanks] = useState();
+  const [loader, setLoader] = useState(false);
   let { setNewTotalBalance } = useAuth();
   async function fetchBanks() {
+    setLoader(true);
     let banksData = await getData("/bank");
     console.log("bankdata", banksData.data.result);
     let bankList = banksData.data.result || [];
+    setLoader(false);
     setBanks(bankList);
   }
   useEffect(() => {
@@ -30,37 +34,42 @@ export const BankListing = () => {
   return (
     <div>
       <h3 className="text-3xl font-bold text-center">Bank Listing</h3>
-      <SharedTable
-        columns={[
-          "Sr.no",
-          "Account no",
-          "Bank Name",
-          "IFSC code",
-          "Amount",
-          "Actions",
-        ]}
-        data={banks}
-        renderRow={(item, index) => {
-          return (
-            <>
-              <TableCell>{index}</TableCell>
-              <TableCell>{item?.accountNo}</TableCell>
-              <TableCell>
-                {item?.name} {item.isDefault ? <span>(default)</span> : ""}{" "}
-              </TableCell>
-              <TableCell>{item?.ifsc}</TableCell>
-              <TableCell>{item?.totalBalance}</TableCell>
-              <TableCell className={"text-right"}>
-                {item.isDefault ? (
-                  <Button disabled>Default</Button>
-                ) : (
-                  <Button onClick={() => setDefault(item)}>Set default</Button>
-                )}
-              </TableCell>
-            </>
-          );
-        }}
-      />
+      {loader && <Loader />}
+      {!loader && (
+        <SharedTable
+          columns={[
+            "Sr.no",
+            "Account no",
+            "Bank Name",
+            "IFSC code",
+            "Amount",
+            "Actions",
+          ]}
+          data={banks}
+          renderRow={(item, index) => {
+            return (
+              <>
+                <TableCell>{index}</TableCell>
+                <TableCell>{item?.accountNo}</TableCell>
+                <TableCell>
+                  {item?.name} {item.isDefault ? <span>(default)</span> : ""}{" "}
+                </TableCell>
+                <TableCell>{item?.ifsc}</TableCell>
+                <TableCell>{item?.totalBalance}</TableCell>
+                <TableCell className={"text-right"}>
+                  {item.isDefault ? (
+                    <Button disabled>Default</Button>
+                  ) : (
+                    <Button onClick={() => setDefault(item)}>
+                      Set default
+                    </Button>
+                  )}
+                </TableCell>
+              </>
+            );
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { HoldingsPieChart } from "./holdings/HoldingPieChart";
 import { getData } from "@/services/http-config";
 import { useAuth } from "@/contexts/auth.context";
+import { LineWave } from "react-loader-spinner";
+import { Loader } from "./components/shared/Loader";
 
 export const Dashboard = () => {
   const { setNewTotalBalance } = useAuth();
@@ -23,7 +25,7 @@ export const Dashboard = () => {
   }, []);
   return (
     <div>
-      {loading && <p className="text-center font-bold text-3xl">Loading...</p>}
+      {loading && <Loader />}
       {holdingsData?.length ? (
         <HoldingsPieChart holdings={holdingsData} />
       ) : !loading ? (
