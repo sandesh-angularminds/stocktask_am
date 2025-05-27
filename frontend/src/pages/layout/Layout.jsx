@@ -62,7 +62,7 @@ export function Layout({ children }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Navbar */}
-      <header className="border-b border-border">
+      <header className="border-b border-border h-14">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           {/* Logo */}
           <div className="text-xl font-semibold text-primary">

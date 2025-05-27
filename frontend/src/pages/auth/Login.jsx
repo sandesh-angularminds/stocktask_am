@@ -29,7 +29,7 @@ export function Login() {
   };
 
   return (
-    <div className="flex justify-center items-center bg-gray-100">
+    <div className="flex justify-center items-center min-h-[calc(100vh-120px)]">
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-center text-2xl">Login</CardTitle>
