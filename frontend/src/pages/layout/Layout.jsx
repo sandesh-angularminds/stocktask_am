@@ -115,7 +115,7 @@ export function Layout({ children }) {
       </header>
 
       {/* Page Content */}
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto">
         {children}
         {/* all dialogs */}
         <AddMoney open={isAddMoneyModal} onOpenChange={setIsAddMoneyModal} />
